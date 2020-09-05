@@ -8,7 +8,6 @@ env: RUN=BUILD
 before_script: rustup target add thumbv7m-none-eabi
 script:
  - cargo build --release --examples
- - cargo test --tests --target x86_64-unknown-linux-gnu
 matrix:
   include:
     - rust: stable

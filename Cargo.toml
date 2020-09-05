@@ -1,26 +1,19 @@
 [package]
-name = "keyberon"
+name = "keyberon-grid"
 version = "0.1.0"
 authors = ["Guillaume Pinot <texitoi@texitoi.eu>", "Robin Krahl <robin.krahl@ireas.org>"]
 edition = "2018"
 
 [dependencies]
-either = { version = "1.5", default-features = false }
-generic-array = "0.13"
-embedded-hal = "0.2"
-usb-device = "0.2.0"
-heapless = "0.5"
-arraydeque = { version = "0.4.5", default-features = false }
-
-# should be examples-dependencies
-[target.'cfg(target_arch = "arm")'.dev-dependencies]
-void = { version = "1", default-features = false }
+keyberon = { git = "https://github.com/TeXitoi/keyberon" }
 stm32f1xx-hal = { version = "0.5", features = ["rt", "stm32f103", "stm32-usbd"] }
 cortex-m = "0.6"
 cortex-m-rt = { version = "0.6.6", features = ["device"] }
-panic-semihosting = "0.5"
+panic-halt = "0.2"
 cortex-m-rtfm = "0.5"
-cortex-m-semihosting = "0.3.2"
+generic-array = "0.13"
+embedded-hal = "0.2"
+usb-device = "0.2.0"
 
 [profile.release]
 lto = true

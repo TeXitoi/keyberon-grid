@@ -12,7 +12,7 @@ use keyberon::key_code::KeyCode::*;
 use keyberon::key_code::{KbHidReport, KeyCode};
 use keyberon::layout::Layout;
 use keyberon::matrix::{Matrix, PressedKeys};
-use panic_semihosting as _;
+use panic_halt as _;
 use rtfm::app;
 use stm32f1xx_hal::gpio::{gpioa::*, gpiob::*, Input, Output, PullUp, PushPull};
 use stm32f1xx_hal::prelude::*;

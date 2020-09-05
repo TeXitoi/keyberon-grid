@@ -1,6 +1,10 @@
-# Keyberon [![Build status](https://travis-ci.org/TeXitoi/keyberon.svg?branch=master)](https://travis-ci.org/TeXitoi/keyberon)
+# Keyberon grid [![Build status](https://travis-ci.org/TeXitoi/keyberon-grid.svg?branch=master)](https://travis-ci.org/TeXitoi/keyberon)
 
-A hand wired ortholinear mechanical keyboard with a firmware in pure Rust. The case uses a parametric design allowing to create a grid keyboard of any size. The firmware allows you to customize each key as you wish: A layer change (as the function key), a key combo (as one key for the paste shortcut) or a regular key.
+A hand wired ortholinear mechanical keyboard with a firmware in pure
+Rust. The case uses a parametric design allowing to create a grid
+keyboard of any size. The firmware allows you to customize each key as
+you wish: A layer change (as the function key), a key combo (as one
+key for the paste shortcut) or a regular key.
 
 ![photo](images/keyberon.jpg)
 
@@ -14,25 +18,14 @@ The [OpenSCad files](cad/) are a totally parametric design. You can generate a g
 
 ## The firmware
 
-The firmware is written in the [rust programming language](https://rust-lang.org). It is not (yet) as feature full, robust and portable as [QMK](https://github.com/qmk/qmk_firmware).
-
-It currently support:
- - Layers when holding a key (aka the fn key). When holding multiple layer keys, the numbers add (if you have a layer 1 key and a layer 2 key, when holding the 2 together, the layer 3 will be active).
- - Transparent key, i.e. when on a alternative layer, the key have the same behavior of the default layer.
- - Change default layer dynamically.
- - Multiple keys send on an single key press. It allows to have keys for complex shortcut, as a key for copy and paste, for alt tab, or for whatever you want.
+The firmware, [Keyberon](https://github.com/TeXitoi/keyberon), is
+written in the [rust programming language](https://rust-lang.org).
 
 # FAQ
 
 ## I want to use your 3D printed case, but I want to use a rock solid firmware
 
 [QMK](https://github.com/qmk/qmk_firmware) supports the blue pill board. You may have to search a bit, but it should not be so complicated. See for example the [BluePill handwired](https://github.com/qmk/qmk_firmware/tree/master/keyboards/handwired/bluepill). Maybe the [firmwares from Cannon Keys](https://github.com/qmk/qmk_firmware/tree/master/keyboards/cannonkeys) can also be interesting. If you do any progress on this side, feel free to open a PR to share your experience.
-
-## I want to use your rust firmware, but not your case
-
-You have basically 2 options: hand wire your keyboard with your case (using a plate and case from the market should be OK as long as you can find a place for the blue pill and the USB connector), or you can buy a PCB with support for a STM32F103 micro-controller, as this is the only micro-controller that have a USB stack in rust at the time of writing. [Cannon Keys](https://cannonkeys.com/) proposes PCB that use the blue pill as the micro-controller, and thus should be fully compatible with the Keyberon firmware (modulo a pin modification, and without support for LED).
-
-Please open a PR if you try anything on this side.
 
 ## Keyberon, what's that name?
 

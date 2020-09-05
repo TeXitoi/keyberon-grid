@@ -37,10 +37,10 @@ Basically:
 curl https://sh.rustup.rs -sSf | sh
 rustup target add thumbv7m-none-eabi
 sudo apt-get install gdb-arm-none-eabi openocd
-cd keyberon
+cd keyberon-grid
 # connect ST-Link v2 to the blue pill and the computer
 # openocd in another terminal
-cargo run --release --example keyberon60
+cargo run --release --bin keyberon60
 ```
 
 Now, If you connect the blue pill board to a computer using the micro USB port, the computer should detect a keyboard. You can test it by pushing the caps lock key on your keyboard, the green led of the blue pill should light up. You can also simulate a button press by connecting PA7 and PA8, your computer should register a space key press.
