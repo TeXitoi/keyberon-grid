@@ -13,7 +13,7 @@ use keyberon::key_code::{KbHidReport, KeyCode};
 use keyberon::layout::Layout;
 use keyberon::matrix::{Matrix, PressedKeys};
 use panic_halt as _;
-use rtfm::app;
+use rtic::app;
 use stm32f1xx_hal::gpio::{gpioa::*, gpiob::*, Input, Output, PullUp, PushPull};
 use stm32f1xx_hal::prelude::*;
 use stm32f1xx_hal::usb::{Peripheral, UsbBus, UsbBusType};
@@ -222,7 +222,7 @@ const APP: () = {
 };
 
 fn send_report(iter: impl Iterator<Item = KeyCode>, usb_class: &mut resources::usb_class<'_>) {
-    use rtfm::Mutex;
+    use rtic::Mutex;
     let report: KbHidReport = iter.collect();
     if usb_class.lock(|k| k.device_mut().set_keyboard_report(report.clone())) {
         while let Ok(0) = usb_class.lock(|k| k.write(report.as_bytes())) {}
