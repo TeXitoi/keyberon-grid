@@ -76,7 +76,7 @@ const CUT: Action = m(&[LShift, Delete]);
 const COPY: Action = m(&[LCtrl, Insert]);
 const PASTE: Action = m(&[LShift, Insert]);
 const L2_ENTER: Action = HoldTap {
-    timeout: 200,
+    timeout: 160,
     hold: &l(2),
     tap: &k(Enter),
 };
@@ -138,29 +138,41 @@ const APP: () = {
     }
 
     #[init]
-    fn init(c: init::Context) -> init::LateResources {
+    fn init(mut c: init::Context) -> init::LateResources {
         static mut USB_BUS: Option<UsbBusAllocator<UsbBusType>> = None;
 
         let mut flash = c.device.FLASH.constrain();
         let mut rcc = c.device.RCC.constrain();
 
+        // set 0x424C in DR10 for dfu on reset
+        let bkp = rcc
+            .bkp
+            .constrain(c.device.BKP, &mut rcc.apb1, &mut c.device.PWR);
+        bkp.write_data_register_low(9, 0x424C);
+
         let clocks = rcc
             .cfgr
             .use_hse(8.mhz())
-            .sysclk(48.mhz())
-            .pclk1(24.mhz())
+            .sysclk(72.mhz())
+            .pclk1(36.mhz())
             .freeze(&mut flash.acr);
 
         let mut gpioa = c.device.GPIOA.split(&mut rcc.apb2);
         let mut gpiob = c.device.GPIOB.split(&mut rcc.apb2);
         let mut gpioc = c.device.GPIOC.split(&mut rcc.apb2);
 
+        // BluePill board has a pull-up resistor on the D+ line.
+        // Pull the D+ pin down to send a RESET condition to the USB bus.
+        let mut usb_dp = gpioa.pa12.into_push_pull_output(&mut gpioa.crh);
+        usb_dp.set_low().unwrap();
+        cortex_m::asm::delay(clocks.sysclk().0 / 100);
+
         let mut led = gpioc.pc13.into_push_pull_output(&mut gpioc.crh);
         led.set_high().unwrap();
         let leds = Leds { caps_lock: led };
 
         let usb_dm = gpioa.pa11;
-        let usb_dp = gpioa.pa12.into_floating_input(&mut gpioa.crh);
+        let usb_dp = usb_dp.into_floating_input(&mut gpioa.crh);
 
         let usb = Peripheral {
             usb: c.device.USB,

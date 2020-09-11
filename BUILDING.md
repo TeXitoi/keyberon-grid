@@ -29,23 +29,56 @@ No support is needed. I print with 20% infill and 0.2mm layers.
 
 ## Compiling and flashing
 
-For compiling and flashing, please refer to [the blue pill quickstart](https://github.com/TeXitoi/blue-pill-quickstart/blob/master/README.md).
+For easy dfu flashing without a ST-Link v2, we use the [STM32duino
+bootloader](https://github.com/rogerclarkmelbourne/STM32duino-bootloader/).
 
-Basically:
+First, install all the needed software:
 
 ```shell
 curl https://sh.rustup.rs -sSf | sh
 rustup target add thumbv7m-none-eabi
-sudo apt-get install gdb-arm-none-eabi openocd
-cd keyberon-grid
-# connect ST-Link v2 to the blue pill and the computer
-# openocd in another terminal
-cargo run --release --bin keyberon60
+sudo apt-get install gdb-arm-none-eabi openocd dfu-util
 ```
 
-Now, If you connect the blue pill board to a computer using the micro USB port, the computer should detect a keyboard. You can test it by pushing the caps lock key on your keyboard, the green led of the blue pill should light up. You can also simulate a button press by connecting PA7 and PA8, your computer should register a space key press.
+Compile the firmware:
 
-As the blue pill [doesn't respect the USB specifications](https://wiki.stm32duino.com/index.php?title=Blue_Pill#Hardware_installation), the computer may not detect the USB device. you can put (but no soldering yet!) a 1.8kΩ resistor between PA12 and 3.3V.
+```shell
+cd keyberon-grid
+cargo objcopy --bin keyberon60 --release -- -O binary keyberon60.bin
+```
+
+Then, install the bootloader on the blue pill. After connecting the
+blue pill with the ST-Link to the computer, type:
+
+```shell
+cd keyberon-grid
+openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg -c "init; reset halt; stm32f1x mass_erase 0; program generic_boot20_pc13.bin exit 0x08000000"
+```
+
+Remove the ST-Link v2 and plug the blue pill with a USB cable to your
+computer. It should now be in DFU mode. Now, flash the firmware:
+
+```shell
+cd keyberon-grid
+sudo dfu-util -d 1eaf:0003 -a 2 -D keyberon60.bin
+```
+
+Now, push the reset button on the blue pill. The computer should
+detect a keyboard. You can test it by pushing the caps lock key on
+your keyboard, the green led of the blue pill should light up. You can
+also simulate a button press by connecting PA7 and PA8, your computer
+should register a space key press.
+
+To reflash the firmware (after changing the layout for example), while
+the keyboard is connected to the computer by USB, push the reset
+button. The blue pill should now be in DFU mode. Flash your firmware
+and push reset, your new firmware is installed and running.
+
+As the blue pill [doesn't respect the USB
+specifications](https://wiki.stm32duino.com/index.php?title=Blue_Pill#Hardware_installation),
+the computer may not detect the USB device. you can put (but no
+soldering yet!) a 1.8kΩ resistor between PA12 and 3.3V. Now, most blue
+pills have a correct resistor, so this workaround might not be needed.
 
 ## Building the keyboard
 
