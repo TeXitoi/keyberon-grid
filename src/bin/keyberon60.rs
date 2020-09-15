@@ -22,7 +22,7 @@ use usb_device::bus::UsbBusAllocator;
 use usb_device::class::UsbClass as _;
 
 type UsbClass = keyberon::Class<'static, UsbBusType, Leds>;
-type UsbDevice = keyberon::Device<'static, UsbBusType>;
+type UsbDevice = usb_device::device::UsbDevice<'static, UsbBusType>;
 
 pub struct Leds {
     caps_lock: gpio::gpioc::PC13<gpio::Output<gpio::PushPull>>,

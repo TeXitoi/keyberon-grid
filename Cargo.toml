@@ -5,7 +5,7 @@ authors = ["Guillaume Pinot <texitoi@texitoi.eu>", "Robin Krahl <robin.krahl@ire
 edition = "2018"
 
 [dependencies]
-keyberon = { git = "https://github.com/TeXitoi/keyberon" }
+keyberon = "0.1.0"
 stm32f1xx-hal = { version = "0.6", features = ["rt", "stm32f103", "stm32-usbd"] }
 cortex-m = "0.6"
 cortex-m-rt = { version = "0.6.6", features = ["device"] }
