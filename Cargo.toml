@@ -5,13 +5,12 @@ authors = ["Guillaume Pinot <texitoi@texitoi.eu>", "Robin Krahl <robin.krahl@ire
 edition = "2018"
 
 [dependencies]
-keyberon = "0.1.0"
-stm32f1xx-hal = { version = "0.6", features = ["rt", "stm32f103", "stm32-usbd"] }
-cortex-m = "0.6"
-cortex-m-rt = { version = "0.6.6", features = ["device"] }
+keyberon = { git = "https://github.com/TeXitoi/keyberon" }
+stm32f1xx-hal = { version = "0.7", features = ["rt", "stm32f103", "stm32-usbd"] }
+cortex-m = "0.7"
+cortex-m-rt = { version = "0.7", features = ["device"] }
 panic-halt = "0.2"
 cortex-m-rtic = "0.5"
-generic-array = "0.13"
 embedded-hal = "0.2"
 usb-device = "0.2.0"
 
