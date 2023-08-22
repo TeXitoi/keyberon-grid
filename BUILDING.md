@@ -38,6 +38,8 @@ First, install all the needed software:
 curl https://sh.rustup.rs -sSf | sh
 rustup target add thumbv7m-none-eabi
 sudo apt-get install gdb-arm-none-eabi openocd dfu-util
+cargo install cargo-binutils
+rustup component add llvm-tools-preview
 ```
 
 Compile the firmware:
